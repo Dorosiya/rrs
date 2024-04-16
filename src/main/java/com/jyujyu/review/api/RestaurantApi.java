@@ -1,10 +1,16 @@
 package com.jyujyu.review.api;
 
 import com.jyujyu.review.api.request.CreateAndEditRestaurantRequest;
+import com.jyujyu.review.model.RestaurantEntity;
+import com.jyujyu.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class RestaurantApi {
+
+    private final RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
     public String getRestaurants(@RequestBody CreateAndEditRestaurantRequest request) {
@@ -17,20 +23,18 @@ public class RestaurantApi {
     }
 
     @PostMapping("/restaurant")
-    public String createRestaurants(@RequestBody CreateAndEditRestaurantRequest request) {
-        return "this is createRestaurant, name = " + request.getName() + " address = " + request.getAddress()
-                + ", menu[0].name = " + request.getMenus().get(0).getName() + ", menu[0].price = " + request.getMenus().get(0).getPrice();
+    public void createRestaurants(@RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.createRestaurant(request);
     }
 
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(@PathVariable Long restaurantId,
+    public void editRestaurant(@PathVariable Long restaurantId,
                                  @RequestBody CreateAndEditRestaurantRequest request) {
-        return "this is editRestaurant, name = " + request.getName() + " address = " + request.getAddress()
-                + ", menu[0].name = " + request.getMenus().get(0).getName() + ", menu[0].price = " + request.getMenus().get(0).getPrice();
+        restaurantService.editRestaurant(restaurantId, request);
     }
 
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurants(@PathVariable Long restaurantId) {
-        return "this is deleteRestaurants";
+    public void deleteRestaurants(@PathVariable Long restaurantId) {
+        restaurantService.deleteRestaurant(restaurantId);
     }
 }
