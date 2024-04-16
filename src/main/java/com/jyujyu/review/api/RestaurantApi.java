@@ -1,10 +1,15 @@
 package com.jyujyu.review.api;
 
 import com.jyujyu.review.api.request.CreateAndEditRestaurantRequest;
+import com.jyujyu.review.api.response.RestaurantDetailView;
+import com.jyujyu.review.api.response.RestaurantView;
 import com.jyujyu.review.model.RestaurantEntity;
 import com.jyujyu.review.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,13 +18,13 @@ public class RestaurantApi {
     private final RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
-    public String getRestaurants(@RequestBody CreateAndEditRestaurantRequest request) {
-        return "this is getRestaurants";
+    public List<RestaurantView> getRestaurants() {
+        return restaurantService.getAllRestaurants();
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public String getRestaurant(@PathVariable Long restaurantId) {
-        return "this is getRestaurant " + restaurantId;
+    public RestaurantDetailView getRestaurant(@PathVariable Long restaurantId) {
+        return restaurantService.getRestaurantDetail(restaurantId);
     }
 
     @PostMapping("/restaurant")
